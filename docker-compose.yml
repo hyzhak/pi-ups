@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  rpi_servo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=:0
+# doesn't work yet
+#       - SDL_VIDEODRIVER=wayland
+#    restart: always
+    privileged: true
+    command: "python3 rpi_ups/main.py"
+#    command: "python3 STServo_Python/read_write.py"
+#    command: "python3 STServo_Python/read.py"

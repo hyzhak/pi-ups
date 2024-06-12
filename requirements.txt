@@ -1,0 +1,4 @@
+# we already install it in apt install
+# pygame==2.5.2
+pygame_gui==0.6.9
+pyserial==3.5
