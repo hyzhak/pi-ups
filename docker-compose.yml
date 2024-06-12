@@ -11,8 +11,8 @@ services:
       - DISPLAY=:0
 # doesn't work yet
 #       - SDL_VIDEODRIVER=wayland
-#    restart: always
+    restart: always
     privileged: true
-    command: "python3 rpi_ups/main.py"
-#    command: "python3 STServo_Python/read_write.py"
-#    command: "python3 STServo_Python/read.py"
+#    command: "python3 rpi_ups/main.py"
+    command: "python3 INA219.py"
+
