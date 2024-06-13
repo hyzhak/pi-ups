@@ -1,8 +1,11 @@
+import pygame
 import smbus
+import sys
 import time
 
 # Config Register (R/W)
 _REG_CONFIG = 0x00
+
 # SHUNT VOLTAGE REGISTER (R)
 _REG_SHUNTVOLTAGE = 0x01
 
@@ -194,6 +197,13 @@ class INA219:
 
 
 if __name__ == '__main__':
+    pygame.init()
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    screen_width = screen.get_width()
+    screen_height = screen.get_height()
+    pygame.font.init()
+    # print the text on the screen
+    font = pygame.font.Font(None, 24)
 
     # Create an INA219 instance.
     ina219 = INA219(addr=0x41)
@@ -214,5 +224,37 @@ if __name__ == '__main__':
         print("Power:         {:6.3f} W".format(power))
         print("Percent:       {:3.1f}%".format(p))
         print("")
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
 
-        time.sleep(2)
+        time.sleep(1)
+        screen.fill((0, 0, 0))
+        pygame.draw.rect(screen, (0, 255, 64), (0, 0, screen_width * p / 100, 10))
+
+        top = 10
+        text = font.render("Load Voltage:  {:6.3f} V".format(bus_voltage), True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (screen_width / 2, top + textRect.height / 2)
+        top += textRect.height + 10
+        screen.blit(text, textRect)
+
+        text = font.render("Current:       {:9.6f} A".format(current / 1000), True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (screen_width / 2, top + textRect.height / 2)
+        top += textRect.height + 10
+        screen.blit(text, textRect)
+
+        text = font.render("Power:         {:6.3f} W".format(power), True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (screen_width / 2, top + textRect.height / 2)
+        top += textRect.height + 10
+        screen.blit(text, textRect)
+
+        text = font.render("Percent:       {:3.1f}%".format(p), True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (screen_width / 2, top + textRect.height / 2)
+        top += textRect.height + 10
+        screen.blit(text, textRect)
+
+        pygame.display.update()
